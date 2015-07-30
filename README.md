@@ -1,5 +1,5 @@
 # jssbackuputil
-A web based implemntation of the JSSBackupUtil. <br />
+A web based implementation of the JSSBackupUtil. <br />
 
 ![alt text](screen.png "Screenshot of the Interface")
 

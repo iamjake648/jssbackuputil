@@ -10,7 +10,7 @@ function reg() {
 			//Post it to the DB.
 			$.ajax({
 				type: "post",
-				url: "userController.php",
+				url: "php/userController.php",
 				data: {
 					username: username,
 					password: password,
@@ -34,7 +34,7 @@ function login() {
 	var password = document.getElementById("password").value;
 	$.ajax({
 		type: "post",
-		url: "login.php",
+		url: "php/login.php",
 		data: {
 			username: username,
 			password: password
@@ -54,7 +54,7 @@ function addToDatabase(action, value) {
 	var username = sessionStorage.getItem("current_user");
 	$.ajax({
 		type: "post",
-		url: "infoController.php",
+		url: "php/infoController.php",
 		data: {
 			action: action,
 			value: value,
@@ -149,7 +149,7 @@ $(document).ready(function(e) {
 	var username = sessionStorage.getItem("current_user");
 	$.ajax({
 		type: "post",
-		url: "checkData.php",
+		url: "php/checkData.php",
 		data: {
 			username: username
 		},
@@ -172,7 +172,7 @@ $(document).ready(function(e) {
 		var path = $("#delete_older_than_path").val();
 		$.ajax({
 			type: "post",
-			url: "scripts/generateScripts.php",
+			url: "php/generateScripts.php",
 			data: {
 				action: action,
 				username: username,
@@ -223,7 +223,7 @@ function takeAction(action) {
 		if (action == "stop_tomcat") {
 			$.ajax({
 				type: "post",
-				url: "scripts/generateScripts.php",
+				url: "php/generateScripts.php",
 				data: {
 					action: action,
 					username: username,
@@ -237,7 +237,7 @@ function takeAction(action) {
 		} else if (action == "start_tomcat") {
 			$.ajax({
 				type: "post",
-				url: "scripts/generateScripts.php",
+				url: "php/generateScripts.php",
 				data: {
 					action: action,
 					username: username,
@@ -257,7 +257,7 @@ function takeAction(action) {
 			if (path != "") {
 				$.ajax({
 					type: "post",
-					url: "scripts/generateScripts.php",
+					url: "php/generateScripts.php",
 					data: {
 						action: action,
 						username: username,
@@ -294,7 +294,7 @@ function backupLocal(action, username) {
 	if (mysql_db_local_path != "") {
 		$.ajax({
 			type: "post",
-			url: "scripts/generateScripts.php",
+			url: "php/generateScripts.php",
 			data: {
 				action: action,
 				username: username,
@@ -320,7 +320,7 @@ function restoreLocal(action, username) {
 	if (mysql_db_local_path != "") {
 		$.ajax({
 			type: "post",
-			url: "scripts/generateScripts.php",
+			url: "php/generateScripts.php",
 			data: {
 				action: action,
 				username: username,
