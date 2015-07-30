@@ -1,7 +1,7 @@
 # jssbackuputil
 A web based implemntation of the JSSBackupUtil. <br />
 
-![alt tag](https://www.dropbox.com/s/04ltmbgii86viab/Screen%20Shot%202015-07-30%20at%2012.40.36%20PM.png?dl=0)
+![alt text](screen.png "Screenshot of the Interface")
 
 *This package requires the LAMP stack to function. <br />
 
