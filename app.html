@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link href="dist/jquery1.css" rel="stylesheet">
+    <link href="dist/jquery2.css" rel="stylesheet">
+    <script src="dist/jquery1.js"></script>
+    <script src="dist/jquery2.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="dist/core.css">
+    <link rel="stylesheet" type="text/css" href="dist/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="dist/l2.css">
+    <script>
+        var username = sessionStorage.getItem("current_user");
+        if (username == null || username == "" || username == "null"){
+            window.location = "index.html";
+        }
+    </script>
+    <script src="scripts.js"></script>
+    <script src="dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="dist/sweetalert.css">
+    <script src="dist/alertify.js"></script>
+    <link rel="stylesheet" type="text/css" href="dist/alertify.css">
+</head>
+
+<body>
+<div data-role="page" data-control-title="Home" id="page1">
+    <div data-theme="a" data-role="header" class="topbar">
+        <h1 class="title">
+            JSS Backup Utility
+        </h1>
+    </div>
+    <div role="main" class="ui-content">
+        <div class="split-wrapper">
+            <div class="content-secondary">
+                <input id="ssh_pass" class="button-bar" type="password" placeholder="SSH Pass">
+                <input id="mysql_pass" class="button-bar" type="password" placeholder="MySQL DB Pass">
+                <div onclick="osType();"> <a href="#" class="ui-btn button-bar delete">
+                    Reset Configuration
+                </a></div>
+                <h3 class="uititles">
+                    Server Actions
+                </h3>
+                <a href="#" onclick="takeAction('stop_tomcat');" class="ui-btn button-bar">
+                    Stop Tomcat
+                </a>
+                <div onclick="takeAction('start_tomcat');"> <a href="#" class="ui-btn button-bar">
+                    Start Tomcat
+                </a></div>
+
+            </div>
+            <div class="content-primary database-backup-config">
+                <h3 class="uititles">
+                    Backups
+                </h3>
+                <div class="ui-grid-a">
+                    <div class="ui-block-a">
+                        <h3 class="uititles">
+                            Save Backup
+                        </h3>
+
+                        <div onclick="takeAction('backup_local');"><a href="#page1" class="ui-btn button-bar">
+                            Save Backup
+                        </a></div>
+                        <div onclick="takeAction('backup_local_and_download');"><a href="#page1" class="ui-btn button-bar">
+                            Save and Download Backup
+                        </a></div>
+                        <div id="backup_download"></div>
+                        <input id="local_path" class="button-bar" placeholder="Local Path ('/tmp/backups')">
+
+                    </div>
+                    <div class="ui-block-b">
+                        <h3 class="uititles">
+                            Restore Backup
+                        </h3>
+
+                        <div onclick="takeAction('restore_local');"><a href="#page1" class="ui-btn button-bar">
+                            Restore From SQL File
+                        </a></div>
+                        <input id="local_restore_path" class="button-bar" placeholder="Restore Path ('/tmp/db.sql')">
+
+                    </div>
+                    <div class="ui-block-a">
+                        <h3 class="uititles">
+                            Schedule Backups
+                        </h3>
+                        <select id="schedule_backup" class="button-bar">
+                            <option>Never</option>
+                            <option>0:00</option>
+                            <option>1:00</option>
+                            <option>2:00</option>
+                            <option>3:00</option>
+                            <option>4:00</option>
+                            <option>5:00</option>
+                            <option>6:00</option>
+                            <option>7:00</option>
+                            <option>8:00</option>
+                            <option>9:00</option>
+                            <option>10:00</option>
+                            <option>11:00</option>
+                            <option>12:00</option>
+                            <option>13:00</option>
+                            <option>14:00</option>
+                            <option>15:00</option>
+                            <option>16:00</option>
+                            <option>17:00</option>
+                            <option>18:00</option>
+                            <option>19:00</option>
+                            <option>20:00</option>
+                            <option>21:00</option>
+                            <option>22:00</option>
+                            <option>23:00</option>
+                        </select>
+                        <input id="schedule_backup_path" type="text" class="button-bar" value="/Library/JSS/Backups/Database">
+                    </div>
+                    <div class="ui-block-b">
+                        <h3 class="uititles">
+                            Delete Backups Older Than
+                        </h3>
+                        <select id="delete_older_than" class="button-bar">
+                            <option>Do Not Delete</option>
+                            <option>1 Day</option>
+                            <option>2 Days</option>
+                            <option>3 Days</option>
+                            <option>5 Days</option>
+                            <option>7 Days</option>
+                            <option>14 Days</option>
+                            <option>30 Days</option>
+                            <option>60 Days</option>
+                            <option>90 Days</option>
+                            <option>180 Days</option>
+                        </select>
+                        <input type="text" id="delete_older_than_path" class="button-bar" value="/Library/JSS/Backups/Database">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
