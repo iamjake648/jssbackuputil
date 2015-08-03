@@ -17,6 +17,7 @@ $backup_path = $_POST['backup_path'];
 $time = $_POST['time'];
 $delete_older_than = $_POST['delete_older_than'];
 $path = $_POST['path'];
+$filename_delete_jss_server = $_POST['filename'];
 
 //Pulling the SSH Host, Username, ect from the database.
 $getInfo = $db->prepare("SELECT * FROM accounts WHERE username = :username;");
@@ -109,16 +110,16 @@ if ($action == "stop_tomcat"){
 	//Change the ownership of the backup just made so we can grab it and download it.
 	$com = "echo ".$ssh_password." | sudo -S chmod 777 ".$mysql_db_local_path."/".$filename;
 	exec_command($com,$ssh_host,$ssh_username,$ssh_password);
-	//Open a new SFTP connection
-	$connectionSFTP = ssh2_connect($ssh_host, 22);
-	ssh2_auth_password($connectionSFTP, $ssh_username, $ssh_password);
-	$sftp = ssh2_sftp($connectionSFTP);
-	//Open the file.
-	$streamFile = fopen("ssh2.sftp://$sftp".$mysql_db_local_path."/".$filename, 'r');
-	//Grabbing the contents of the file.
-	$contents = file_get_contents("ssh2.sftp://$sftp".$mysql_db_local_path."/".$filename);
-	//Echo an identifier, filename and then the data.
-	echo "FILE|__|".$filename."|__|"."data:sql;base64,".base64_encode($contents);
+
+	if ($data['type'] == "Linux"){
+		$com = "echo ".$ssh_password." | sudo -S mv ".$mysql_db_local_path."/".$filename." /usr/local/jss/tomcat/webapps/ROOT/";
+		exec_command($com,$ssh_host,$ssh_username,$ssh_password);
+	} else {
+		$com = "echo ".$ssh_password." | sudo -S mv ".$mysql_db_local_path."/".$filename." /Library/JSS/Tomcat/webapps/ROOT/";
+		exec_command($com,$ssh_host,$ssh_username,$ssh_password);
+	}
+
+	echo "FILE|__|".$filename."|__|".$ssh_host;
 
 //This function restores a DB from a local file.
 //REQUIRED POSTS: Action, Username, SSH Password, MySQL DB Output Path
@@ -213,8 +214,17 @@ if ($action == "stop_tomcat"){
 		}
 	}
 
+} elseif ($action == "delete_db"){
+if ($data['type'] == "Linux"){
+	$com = 'echo '.$ssh_password.' | sudo -S rm /usr/local/jss/tomcat/webapps/ROOT/'.$filename_delete_jss_server;
+	exec_command($com,$ssh_host,$ssh_username,$ssh_password);
+} else {
+	$com = 'echo '.$ssh_password.' | sudo -S rm /Library/JSS/Tomcat/webapps/ROOT/'.$filename_delete_jss_server;
+	exec_command($com,$ssh_host,$ssh_username,$ssh_password);
 }
 
+
+}
 
 
 ?>

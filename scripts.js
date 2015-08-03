@@ -186,11 +186,13 @@ $(document).ready(function(e) {
 		});
 	});
 });
+
 //Function to handle showing alerts
 function messageCheck(output) {
 	if (output.indexOf("FILE|__|") != -1) {
 		var contents = output.split("|__|");
-		$("#backup_download").html('<a href="' + contents[2] + '" target="_blank" download=' + contents[1] + '>' + contents[1] + '</a>');
+		$("#backup_download").html('<a href="https://' + contents[2] + ':8443/'+contents[1]+'" target="_blank">' + contents[1] + '</a> <a href="#" onclick="takeAction(\'delete_db\')">!Delete File</a>');
+
 	} else {
 		var string = $.trim(output);
 		if (string == "hostfail") {
@@ -279,6 +281,23 @@ function takeAction(action) {
 			} else {
 				alertify.error("Must Specify Scheduled Backup Path.");
 			}
+		} else if (action == "delete_db"){
+			var full_text = $("#backup_download").text();
+			var filename = full_text.substr(0,full_text.indexOf(" "));
+			$.ajax({
+				type: "post",
+				url: "php/generateScripts.php",
+				data: {
+					action: action,
+					username: username,
+					sshpassword: window.sshpass,
+					filename : filename
+				},
+				success: function(data) {
+					messageCheck(data);
+					$("#backup_download").html("");
+				}
+			});
 		}
 	} else {
 		alertify.error("Must Input SSH Password.");
