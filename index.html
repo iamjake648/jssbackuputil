@@ -168,6 +168,16 @@ body{
 				</div>
 					
 		</div>
+	<script>
+		if (sessionStorage.getItem("current_user") != null){
+			$("#username").val(sessionStorage.getItem("current_user"));
+		}
+		$(document).keypress(function(e) {
+			if(e.which == 13) {
+				login();
+			}
+		});
+	</script>
 
   <script src='http://codepen.io/assets/libs/fullpage/jquery.js'></script>
   <script src="scripts.js"></script>

@@ -46,6 +46,8 @@ function exec_command($command,$ssh_host,$ssh_username,$ssh_password){
 			if (!($stream = ssh2_exec($con, $command ))) {
 				echo "commandfail\n";
 			} else {
+				stream_set_blocking($stream, true);
+				$result = stream_get_contents($stream);
 				echo "Done";
 				//Make sure to close the connection
 				fclose($stream);
@@ -61,11 +63,11 @@ if ($action == "stop_tomcat"){
 	if ($data['type'] == "Linux"){
 		//Build the command, then run it through our exec function.
 		 $com = 'echo '.$ssh_password.' | sudo -S service jamf.tomcat7 stop';
+		 exec_command($com,$ssh_host,$ssh_username,$ssh_password);
 	} else {
 		$com = 'echo '.$ssh_password.' | sudo -S launchctl unload /Library/LaunchDaemons/com.jamfsoftware.tomcat.plist';
+		exec_command($com,$ssh_host,$ssh_username,$ssh_password);
 	}
-
-	exec_command($com,$ssh_host,$ssh_username,$ssh_password);
 
 //Simple action to start tomcat.
 //REQUIRED POSTS: Action, Username, SSH Password
@@ -213,7 +215,6 @@ if ($action == "stop_tomcat"){
 
 		}
 	}
-
 } elseif ($action == "delete_db"){
 	if ($data['type'] == "Linux"){
 		$com = 'echo '.$ssh_password.' | sudo -S rm /usr/local/jss/tomcat/webapps/ROOT/'.$filename_delete_jss_server;
@@ -224,7 +225,6 @@ if ($action == "stop_tomcat"){
 	}
 } elseif ($action == "test_connection"){
 	$com = 'echo '.$ssh_password.' | sudo -S ls';
-	echo $com; 
 	exec_command($com,$ssh_host,$ssh_username,$ssh_password);
 }
 

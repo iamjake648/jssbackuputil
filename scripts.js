@@ -18,6 +18,7 @@ function reg() {
 				},
 				success: function(data) {
 					console.log(data);
+					sessionStorage.setItem("current_user", username);
 					window.location = "index.html";
 				}
 			});
@@ -219,7 +220,12 @@ function messageCheck(output) {
 			alertify.error("Unable to execute Command");
 		} else if (string == "Done") {
 			alertify.success("Command Ran Successfully");
+		} else if (string == ""){
+			alertify.success("Command Ran Successfully");
+		} else {
+			alertify.success(output);
 		}
+
 	}
 }
 
@@ -338,7 +344,7 @@ function backupLocal(action, username) {
 	if (mysqlpassword == "") {
 		alertify.error("Warning: No SQL pass specified.")
 	}
-	if (mysql_db_local_path != "") {
+	if (mysql_db_local_path != "" || action == "backup_local_and_download") {
 		$.ajax({
 			type: "post",
 			url: "php/generateScripts.php",
