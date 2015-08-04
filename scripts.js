@@ -49,12 +49,6 @@ function login() {
 		}
 	});
 }
-//Simple Logout Function
-function logout(){
-	sessionStorage.removeItem("current_user");
-	window.location = "index.html";
-}
-
 //Function to handle inputting information to the DB
 function addToDatabase(action, value) {
 	var username = sessionStorage.getItem("current_user");
@@ -149,9 +143,6 @@ function enterInformation() {
 			});
 		});
 	});
-	$("#ssh_pass").val("");
-	$("#mysql_pass").val("");
-
 }
 $(document).ready(function(e) {
 	//Check to see if they have informtation in the DB for the given user.
@@ -168,10 +159,6 @@ $(document).ready(function(e) {
 			}
 		}
 	});
-	//Flash Important Elements
-	$("#ssh_pass").fadeIn(1000).fadeOut(1000).fadeIn(1000).fadeOut(1000).fadeIn(1000);
-	$("#mysql_pass").fadeIn(1000).fadeOut(1000).fadeIn(1000).fadeOut(1000).fadeIn(1000);
-
 	//Listen for changes with the schedule backup menu
 	$("#schedule_backup").change(function() {
 		takeAction("schedule_backup");
@@ -204,8 +191,8 @@ $(document).ready(function(e) {
 function messageCheck(output) {
 	if (output.indexOf("FILE|__|") != -1) {
 		var contents = output.split("|__|");
-		$("#backup_download").html('<a href="https://' + contents[2] + ':8443/'+contents[1]+'" target="_blank">' + contents[1] + '</a> <a href="#" id="delete_file" onclick="takeAction(\'delete_db\')">!Delete File</a>');
-		$("#delete_file").fadeIn(1000).fadeOut(1000).fadeIn(1000).fadeOut(1000).fadeIn(1000);
+		$("#backup_download").html('<a href="https://' + contents[2] + ':8443/'+contents[1]+'" target="_blank">' + contents[1] + '</a> <a href="#" onclick="takeAction(\'delete_db\')">!Delete File</a>');
+
 	} else {
 		var string = $.trim(output);
 		if (string == "hostfail") {
@@ -320,9 +307,6 @@ function takeAction(action) {
 function backupLocal(action, username) {
 	var mysqlpassword = $("#mysql_pass").val();
 	var mysql_db_local_path = $("#local_path").val();
-	if (mysql_db_local_path.lastIndexOf("/") == mysql_db_local_path.length){
-		mysql_db_local_path = mysql_db_local_path.substr(0,mysql_db_local_path.length-1);
-	}
 	if (mysqlpassword == "") {
 		alertify.error("Warning: No SQL pass specified.")
 	}
@@ -349,9 +333,6 @@ function backupLocal(action, username) {
 function restoreLocal(action, username) {
 	var mysqlpassword = $("#mysql_pass").val();
 	var mysql_db_local_path = $("#local_restore_path").val();
-	if (mysql_db_local_path.lastIndexOf("/") == mysql_db_local_path.length){
-		mysql_db_local_path = mysql_db_local_path.substr(0,mysql_db_local_path.length-1);
-	}
 	if (mysqlpassword == "") {
 		alertify.error("Warning: No SQL pass specified.")
 	}

@@ -22,6 +22,5 @@ A web based implementation of the JSSBackupUtil. <br />
 ###How to use: <br />
 1. After installing the LAMP stack, add all of the files to the PHP /var/www/html dir.<br />
 2. Import the DB to mysql and configure db.php. <br />
-3. You will need to change the Google Captcha Key on line 170 of register.html. Registration is free.
-4. Register users who would like to use the app in /register. Each users configuration goes into the DB seperate.<br />
-5. Use it!
+3. Register users who would like to use the app in /register. Each users configuration goes into the DB seperate.<br />
+4. Use it! 
