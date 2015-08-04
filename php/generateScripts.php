@@ -4,7 +4,7 @@
 Written by Jake Schultz on 23/7/15
 This file handles SSH connections into the JSS Server, and running commands.
 */
-require '../db.php';
+require 'db.php';
 
 //Action POST variable tells this file which action to take.
 //Not all post variables need to be used every time.
@@ -60,15 +60,15 @@ if ($action == "stop_tomcat"){
 	//Check for OSX/Linux in the DB. Different commands apply.
 	if ($data['type'] == "Linux"){
 		//Build the command, then run it through our exec function.
-		$com = 'echo '.$ssh_password.' | sudo -S service jamf.tomcat7 stop';
-		exec_command($com,$ssh_host,$ssh_username,$ssh_password);
+		 $com = 'echo '.$ssh_password.' | sudo -S service jamf.tomcat7 stop';
 	} else {
 		$com = 'echo '.$ssh_password.' | sudo -S launchctl unload /Library/LaunchDaemons/com.jamfsoftware.tomcat.plist';
-		exec_command($com,$ssh_host,$ssh_username,$ssh_password);
 	}
+
+	exec_command($com,$ssh_host,$ssh_username,$ssh_password);
+
 //Simple action to start tomcat.
 //REQUIRED POSTS: Action, Username, SSH Password
-
 } else if ($action == "start_tomcat"){
 	if ($data['type'] == "Linux"){
 		$com = 'echo '.$ssh_password.' | sudo -S service jamf.tomcat7 start';
@@ -215,15 +215,17 @@ if ($action == "stop_tomcat"){
 	}
 
 } elseif ($action == "delete_db"){
-if ($data['type'] == "Linux"){
-	$com = 'echo '.$ssh_password.' | sudo -S rm /usr/local/jss/tomcat/webapps/ROOT/'.$filename_delete_jss_server;
+	if ($data['type'] == "Linux"){
+		$com = 'echo '.$ssh_password.' | sudo -S rm /usr/local/jss/tomcat/webapps/ROOT/'.$filename_delete_jss_server;
+		exec_command($com,$ssh_host,$ssh_username,$ssh_password);
+	}	 else {
+		$com = 'echo ' . $ssh_password . ' | sudo -S rm /Library/JSS/Tomcat/webapps/ROOT/' . $filename_delete_jss_server;
+		exec_command($com, $ssh_host, $ssh_username, $ssh_password);
+	}
+} elseif ($action == "test_connection"){
+	$com = 'echo '.$ssh_password.' | sudo -S ls';
+	echo $com; 
 	exec_command($com,$ssh_host,$ssh_username,$ssh_password);
-} else {
-	$com = 'echo '.$ssh_password.' | sudo -S rm /Library/JSS/Tomcat/webapps/ROOT/'.$filename_delete_jss_server;
-	exec_command($com,$ssh_host,$ssh_username,$ssh_password);
-}
-
-
 }
 
 

@@ -159,6 +159,21 @@ $(document).ready(function(e) {
 			}
 		}
 	});
+
+	$.ajax({
+		type: "post",
+		url: "php/loadData.php",
+		data: {
+			username: username
+		},
+		success: function(data) {
+			$("#server_info").html(data);
+		}
+	});
+	//Flash Important Elements
+	$("#ssh_pass").fadeIn(1000).fadeOut(1000).fadeIn(1000).fadeOut(1000).fadeIn(1000);
+	$("#mysql_pass").fadeIn(1000).fadeOut(1000).fadeIn(1000).fadeOut(1000).fadeIn(1000);
+
 	//Listen for changes with the schedule backup menu
 	$("#schedule_backup").change(function() {
 		takeAction("schedule_backup");
@@ -189,6 +204,7 @@ $(document).ready(function(e) {
 
 //Function to handle showing alerts
 function messageCheck(output) {
+	console.log(output);
 	if (output.indexOf("FILE|__|") != -1) {
 		var contents = output.split("|__|");
 		$("#backup_download").html('<a href="https://' + contents[2] + ':8443/'+contents[1]+'" target="_blank">' + contents[1] + '</a> <a href="#" onclick="takeAction(\'delete_db\')">!Delete File</a>');
@@ -231,8 +247,20 @@ function takeAction(action) {
 					username: username,
 					sshpassword: window.sshpass
 				},
-				success: function(data) {
-					console.log(data);
+				success: function (data) {
+					messageCheck(data);
+				}
+			});
+		} else if (action == "test_connection"){
+			$.ajax({
+				type: "post",
+				url: "php/generateScripts.php",
+				data: {
+					action: action,
+					username: username,
+					sshpassword: window.sshpass
+				},
+				success: function (data) {
 					messageCheck(data);
 				}
 			});

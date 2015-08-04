@@ -39,10 +39,15 @@
     <div role="main" class="ui-content">
         <div class="split-wrapper">
             <div class="content-secondary">
+                <h3 class="uititles">Server:</h3>
+                <h3 class="uititles" id="server_info"></h3>
                 <input id="ssh_pass" class="button-bar" type="password" placeholder="SSH Pass">
                 <input id="mysql_pass" class="button-bar" type="password" placeholder="MySQL DB Pass">
                 <div onclick="osType();"> <a href="#" class="ui-btn button-bar delete">
                     Reset Configuration
+                </a></div>
+                <div onclick="takeAction('test_connection');"> <a href="#" class="ui-btn button-bar">
+                    Test Connection
                 </a></div>
                 <h3 class="uititles">
                     Server Actions
@@ -53,6 +58,7 @@
                 <div onclick="takeAction('start_tomcat');"> <a href="#" class="ui-btn button-bar">
                     Start Tomcat
                 </a></div>
+
 
             </div>
             <div class="content-primary database-backup-config">
@@ -68,11 +74,12 @@
                         <div onclick="takeAction('backup_local');"><a href="#page1" class="ui-btn button-bar">
                             Save Backup
                         </a></div>
+                        <input id="local_path" class="button-bar" placeholder="Local Path ('/tmp/backups')">
                         <div onclick="takeAction('backup_local_and_download');"><a href="#page1" class="ui-btn button-bar">
                             Save and Download Backup
                         </a></div>
                         <div id="backup_download"></div>
-                        <input id="local_path" class="button-bar" placeholder="Local Path ('/tmp/backups')">
+
 
                     </div>
                     <div class="ui-block-b">
