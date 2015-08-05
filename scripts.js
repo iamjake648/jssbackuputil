@@ -61,7 +61,11 @@ function addToDatabase(action, value) {
 			value: value,
 			username: username
 		},
-		success: function(data) {}
+		success: function(data) {
+			if (action == "mysql_database_name"){
+				location.reload();
+			}
+		}
 	});
 }
 //This function handles inputting all of the information about the User env to the DB
@@ -157,6 +161,18 @@ $(document).ready(function(e) {
 		success: function(data) {
 			if (data == 0) {
 				osType();
+			} else {
+				var items = data.split("||");
+				console.log(items);
+				if (items[0] == "Linux" && items[1] == ""){
+					$("#schedule_backup_path").val("/usr/local/jss/backups/database");
+				} else if (items[0] == "Linux" && items[1] != ""){
+					$("#schedule_backup_path").val(items[1]);
+				} else if (items[1] == "Mac" && items[1] == ""){
+					$("#schedule_backup_path").val("/Library/JSS/Backups/Database");
+				} else if (items[1] == "Mac" && items[1] != ""){
+					$("#schedule_backup_path").val(items[1]);
+				}
 			}
 		}
 	});
